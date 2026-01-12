@@ -10,13 +10,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
-        /* ================= 核心变量与重置 ================= */
+        /* ================= 核心变量 ================= */
         :root {
-            --bg-color: #080808;      /* 极致黑 */
-            --bg-panel: #111111;      /* 面板深灰 */
-            --text-main: #E5E5E5;     /* 亮银灰 */
-            --text-muted: #777777;    /* 暗灰 */
-            --accent: #7A8A7A;        /* 干燥苔藓绿 */
+            --bg-color: #080808;
+            --bg-panel: #111111;
+            --text-main: #E5E5E5;
+            --text-muted: #888888; /* 稍微调亮一点，增加无边框下的可读性 */
+            --accent: #7A8A7A;
             
             --font-sans: 'Inter', sans-serif;
             --font-mono: 'Space Mono', monospace;
@@ -31,280 +31,197 @@
             color: var(--text-main);
             font-family: var(--font-sans);
             line-height: 1.6;
-            overflow-x: hidden; /* 防止横向滚动 */
+            overflow-x: hidden;
         }
 
-        a { text-decoration: none; color: inherit; transition: color 0.3s ease; }
+        a { text-decoration: none; color: inherit; transition: all 0.3s ease; cursor: pointer; }
         ul { list-style: none; }
         img { max-width: 100%; display: block; }
+        button { cursor: pointer; border: none; outline: none; background: none; }
 
-        /* --- 排版工具类 --- */
+        /* --- 排版工具 --- */
         .uppercase { text-transform: uppercase; }
         .mono { font-family: var(--font-mono); }
         .tracking-wide { letter-spacing: 0.1em; }
         .tracking-wider { letter-spacing: 0.25em; }
         .text-muted { color: var(--text-muted); }
-        .flex-center { display: flex; justify-content: center; align-items: center; }
 
-        /* --- 动画类 --- */
+        /* --- 基础动画 --- */
         .fade-in-up {
-            opacity: 0;
-            transform: translateY(40px);
+            opacity: 0; transform: translateY(40px);
             transition: opacity 1s ease-out, transform 1s ease-out;
         }
-        .fade-in-up.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .fade-in-up.visible { opacity: 1; transform: translateY(0); }
 
-        /* ================= 导航栏 (HEADER) ================= */
-        header {
-            position: fixed;
-            top: 0; left: 0; width: 100%;
-            padding: 24px 48px;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000;
-            mix-blend-mode: difference; /* 让文字在黑白背景下都能看清 */
-        }
-
-        .logo {
-            font-weight: 800;
-            font-size: 1.2rem;
-            position: relative;
-        }
-        /* 模拟 Logo 的水平切割线 */
-        .logo::after {
-            content: '';
-            position: absolute;
-            top: 50%; left: -10%; width: 120%; height: 1px;
-            background: #fff;
-            opacity: 0.8;
-        }
-
-        nav ul { display: flex; gap: 40px; }
-        nav a { font-size: 0.75rem; font-weight: 600; opacity: 0.8; }
-        nav a:hover { opacity: 1; }
-
-        .cart-status { font-size: 0.75rem; }
-
-
-        /* ================= 1. HERO SECTION (首屏) ================= */
-        #hero {
-            height: 100vh;
-            position: relative;
-            /* 【修正】这里改成了 .jpg */
-            background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.5)), url('./images/hero.jpg');
-            background-size: cover;
-            background-position: center;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-        }
-
-        .hero-content { text-align: center; z-index: 2; mix-blend-mode: difference;}
-        
-        h1 {
-            font-size: clamp(3rem, 10vw, 8rem);
-            font-weight: 900;
-            line-height: 1;
-            margin-bottom: 24px;
-            opacity: 0.95;
-        }
-
-        .hero-tagline {
-            font-size: clamp(0.8rem, 2vw, 1rem);
-            opacity: 0.9;
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 40px;
-            font-size: 0.7rem;
-            opacity: 0.6;
-            animation: bounce 2s infinite;
-        }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-10px);}
-            60% {transform: translateY(-5px);}
-        }
-
-
-        /* ================= 2. PHILOSOPHY (模特/品牌) ================= */
-        #philosophy {
-            display: flex;
-            min-height: 90vh;
-            background-color: var(--bg-panel);
-        }
-
-        .phi-text {
-            flex: 1;
-            padding: 80px;
-            display: flex; flex-direction: column; justify-content: center;
-        }
-
-        .phi-visual {
-            flex: 1.2;
-            /* 【修正】这里改成了 .jpg */
-            background-image: url('./images/model.jpg');
-            background-size: cover;
-            background-position: center top;
-        }
-
-        .section-num {
-            display: block;
-            margin-bottom: 40px;
-            font-size: 0.8rem;
-            color: var(--accent);
-        }
-
-        h2 {
-            font-size: clamp(2rem, 4vw, 3.5rem);
-            font-weight: 300;
-            line-height: 1.2;
-            margin-bottom: 40px;
-        }
-
-        .phi-desc {
-            max-width: 400px;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-
-        /* ================= 3. PRODUCT (产品详情) ================= */
-        #product {
-            display: flex;
-            min-height: 100vh;
-            background-color: var(--bg-color);
-            border-top: 1px solid #1a1a1a;
-        }
-
-        /* 交换顺序：左图右文 */
-        .prod-visual {
-            flex: 1.5;
-            /* 【修正】这里改成了 .jpg */
-            background-image: url('./images/product.jpg');
-            background-size: cover;
-            background-position: center;
-        }
-
-        .prod-info {
-            flex: 1;
-            padding: 80px;
-            display: flex; flex-direction: column; justify-content: center;
-            border-left: 1px solid #1a1a1a;
-        }
-
-        .prod-header { margin-bottom: 60px; }
-        .prod-name { font-size: 3rem; font-weight: 400; margin-bottom: 10px; }
-        .prod-price { font-size: 1.2rem; color: var(--accent); }
-
-        .specs-list {
-            margin-bottom: 60px;
-            border-top: 1px solid #333;
-        }
-
-        .spec-item {
-            display: flex;
-            justify-content: space-between;
+        /* ================= UI 组件 ================= */
+        /* 按钮也去掉了边框，改为极简的下划线风格，更透气 */
+        .btn-text {
+            display: inline-block;
             padding: 15px 0;
-            border-bottom: 1px solid #333;
-            font-size: 0.85rem;
-        }
-
-        .btn-add {
-            width: 100%;
-            padding: 20px;
-            background: transparent;
-            border: 1px solid var(--text-main);
             color: var(--text-main);
-            font-size: 0.9rem;
-            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
             transition: all 0.3s ease;
         }
-
-        .btn-add:hover {
+        .btn-text:hover {
+            border-bottom-color: var(--text-main);
+            color: #fff;
+        }
+        
+        /* 为了保留购买按钮的显眼度，给它一个微弱的填充 */
+        .btn-fill {
+            width: 100%;
+            padding: 20px;
+            background: rgba(255,255,255,0.05); /* 极淡的背景 */
+            color: var(--text-main);
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        .btn-fill:hover {
             background: var(--text-main);
             color: var(--bg-color);
         }
 
+        /* ================= 模态框 (无边框悬浮版) ================= */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); /* 背景更黑，突出悬浮感 */
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .modal-overlay.active {
+            opacity: 1; pointer-events: all;
+        }
 
-        /* ================= 4. MANIFESTO (氛围宣言) ================= */
-        #manifesto {
-            height: 80vh;
+        .modal-container {
+            width: 90%; max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            
+            /* 【核心修改】去掉了 border，改用背景色和阴影 */
+            background: #141414; 
+            border: none; 
+            
+            /* 这种阴影能制造出极强的悬浮感 */
+            box-shadow: 0 40px 80px rgba(0,0,0,1); 
+            
+            padding: 80px 60px;
             position: relative;
-            /* 【修正】这里改成了 .jpg */
-            background-image: url('./images/atmosphere.jpg');
-            background-attachment: fixed; /* 视差滚动 */
-            background-size: cover;
-            background-position: center;
+            transform: translateY(40px) scale(0.96);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: translateY(0) scale(1);
+        }
+
+        .close-btn {
+            position: absolute; top: 30px; right: 30px;
+            font-family: var(--font-mono);
+            font-size: 2rem;
+            line-height: 1;
+            font-weight: 200;
+            color: #444;
+            transition: color 0.3s;
+        }
+        .close-btn:hover { color: #fff; }
+
+        /* 模态框布局 */
+        .modal-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+        }
+        
+        .modal-title {
+            font-size: 2.5rem; 
+            font-weight: 800; 
+            margin-bottom: 40px; 
+            /* 【核心修改】去掉了下划线 */
+            border: none; 
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+        
+        .modal-subtitle {
+            font-family: var(--font-mono); 
+            color: var(--accent); 
+            font-size: 0.75rem;
+            margin-bottom: 15px; 
+            display: block;
+            opacity: 0.8;
+        }
+        
+        .note-block {
+            margin-bottom: 40px; 
+            /* 【核心修改】去掉了内部分割线 */
+            border: none; 
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .modal-grid { grid-template-columns: 1fr; gap: 40px; }
+            .modal-container { padding: 50px 25px; }
+            .modal-title { font-size: 2rem; }
+        }
+
+        /* ================= 现有页面样式 (保持不变) ================= */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%; padding: 24px 48px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; mix-blend-mode: difference;
+        }
+        .logo { font-weight: 800; font-size: 1.2rem; position: relative; }
+        .logo::after {
+            content: ''; position: absolute; top: 50%; left: -10%; width: 120%; height: 1px;
+            background: #fff; opacity: 0.8;
+        }
+        nav ul { display: flex; gap: 40px; }
+        nav a:hover { color: var(--accent); }
+
+        #hero {
+            height: 100vh; position: relative;
+            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('./images/hero.jpg');
+            background-size: cover; background-position: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        h1 { font-size: clamp(3rem, 10vw, 8rem); font-weight: 900; line-height: 1; margin-bottom: 24px; opacity: 0.95; text-align: center; }
+        
+        #philosophy { display: flex; min-height: 90vh; background-color: var(--bg-panel); }
+        .phi-text { flex: 1; padding: 80px; display: flex; flex-direction: column; justify-content: center; }
+        .phi-visual { flex: 1.2; background-image: url('./images/model.jpg'); background-size: cover; background-position: center top; }
+        
+        #product { display: flex; min-height: 100vh; background-color: var(--bg-color); border-top: 1px solid #1a1a1a; }
+        .prod-visual { flex: 1.5; background-image: url('./images/product.jpg'); background-size: cover; background-position: center; }
+        .prod-info { flex: 1; padding: 80px; display: flex; flex-direction: column; justify-content: center; border-left: 1px solid #1a1a1a; }
+        
+        #manifesto {
+            height: 80vh; position: relative;
+            background-image: url('./images/atmosphere.jpg'); background-attachment: fixed;
+            background-size: cover; background-position: center;
             display: flex; justify-content: center; align-items: center;
         }
-        
-        /* 遮罩层，让背景更深沉 */
-        #manifesto::before {
-            content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.5);
-        }
+        #manifesto::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.5); }
+        .manifesto-text { position: relative; z-index: 2; font-size: clamp(2rem, 6vw, 5rem); font-weight: 800; color: rgba(255,255,255,0.8); mix-blend-mode: overlay; text-align: center; }
 
-        .manifesto-lines {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-        }
+        footer { padding: 80px 48px; background-color: #050505; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; font-size: 0.8rem; }
+        .copyright { grid-column: 1 / -1; margin-top: 60px; padding-top: 20px; border-top: 1px solid #1a1a1a; display: flex; justify-content: space-between; }
 
-        .manifesto-text {
-            display: block;
-            font-size: clamp(2rem, 6vw, 5rem);
-            font-weight: 800;
-            line-height: 1.1;
-            color: rgba(255,255,255,0.8);
-            mix-blend-mode: overlay; /* 让文字融入纹理 */
-        }
-
-
-        /* ================= FOOTER ================= */
-        footer {
-            padding: 80px 48px;
-            background-color: #050505;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 40px;
-            font-size: 0.8rem;
-        }
-
-        .footer-brand h4 { margin-bottom: 20px; font-size: 1rem; }
-        .footer-links li { margin-bottom: 12px; }
-        .footer-links a:hover { color: var(--accent); }
-        
-        .copyright {
-            grid-column: 1 / -1;
-            margin-top: 60px;
-            padding-top: 20px;
-            border-top: 1px solid #1a1a1a;
-            color: #444;
-            display: flex; justify-content: space-between;
-        }
-
-        /* ================= 移动端适配 (Responsive) ================= */
         @media (max-width: 768px) {
-            header { padding: 20px; }
-            nav { display: none; } /* 移动端隐藏导航 */
-            
-            #philosophy, #product {
-                flex-direction: column;
-            }
-            
-            .phi-visual, .prod-visual {
-                min-height: 50vh;
-                order: -1; /* 图片置顶 */
-            }
-            
-            .phi-text, .prod-info {
-                padding: 40px 24px;
-            }
-
+            header { padding: 20px; } nav { display: none; }
+            #philosophy, #product { flex-direction: column; }
+            .phi-visual, .prod-visual { min-height: 50vh; order: -1; }
+            .phi-text, .prod-info { padding: 40px 24px; }
             footer { grid-template-columns: 1fr; }
         }
-
     </style>
 </head>
 <body>
@@ -313,8 +230,8 @@
         <a href="#" class="logo uppercase tracking-wider">Grayscale</a>
         <nav class="mono uppercase tracking-wide">
             <ul>
-                <li><a href="#philosophy">Philosophy</a></li>
-                <li><a href="#product">Object</a></li>
+                <li><a onclick="openModal('modal-philosophy')">Philosophy</a></li>
+                <li><a onclick="openModal('modal-product')">Object</a></li>
                 <li><a href="#manifesto">Manifesto</a></li>
             </ul>
         </nav>
@@ -326,16 +243,18 @@
             <h1 class="uppercase tracking-wider">Grayscale</h1>
             <div class="hero-tagline mono uppercase tracking-wide">Industrial Fragrance Project.</div>
         </div>
-        <div class="scroll-indicator mono uppercase">Scroll</div>
     </section>
 
     <section id="philosophy">
         <div class="phi-text fade-in-up">
-            <span class="section-num mono">FIG. 01 / THE PERSONA</span>
+            <span class="section-num mono" style="color:var(--accent); margin-bottom:20px;">FIG. 01 / THE PERSONA</span>
             <h2 class="uppercase">Cold concrete.<br>Warm skin.<br>Silent presence.</h2>
-            <p class="phi-desc mono">
+            <p class="phi-desc mono text-muted" style="margin-bottom: 60px;">
                 We design for the outliers. Those who find comfort in the Brutalist architecture of the modern city.
             </p>
+            <div>
+                <button class="btn-text" onclick="openModal('modal-philosophy')">Read The Philosophy</button>
+            </div>
         </div>
         <div class="phi-visual"></div>
     </section>
@@ -343,81 +262,146 @@
     <section id="product">
         <div class="prod-visual"></div>
         <div class="prod-info fade-in-up">
-            <div class="prod-header">
-                <span class="section-num mono">FIG. 02 / THE OBJECT</span>
-                <h3 class="prod-name uppercase tracking-wider">Silent Moss</h3>
-                <span class="prod-price mono">¥1,450 CNY</span>
+            <div style="margin-bottom: 40px;">
+                <span class="section-num mono" style="color:var(--accent);">FIG. 02 / THE OBJECT</span>
+                <h3 class="uppercase tracking-wider" style="font-size: 3rem; font-weight:400;">Silent Moss</h3>
+                <span class="mono" style="color: var(--accent); font-size: 1.2rem;">¥1,450 CNY</span>
             </div>
 
-            <div class="specs-list mono uppercase text-muted">
-                <div class="spec-item">
-                    <span>Notes</span>
-                    <span style="color:var(--text-main)">Wet Stone, Moss</span>
+            <div class="mono uppercase text-muted" style="margin-bottom: 60px;">
+                <div style="display:flex; justify-content:space-between; padding:10px 0;">
+                    <span>Notes</span><span style="color:var(--text-main)">Wet Stone, Moss</span>
                 </div>
-                <div class="spec-item">
-                    <span>Material</span>
-                    <span style="color:var(--text-main)">Brushed Aluminum</span>
-                </div>
-                <div class="spec-item">
-                    <span>Origin</span>
-                    <span style="color:var(--text-main)">Shanghai, CN</span>
-                </div>
-                <div class="spec-item">
-                    <span>Volume</span>
-                    <span style="color:var(--text-main)">50ml / 1.7fl.oz</span>
+                <div style="display:flex; justify-content:space-between; padding:10px 0;">
+                    <span>Material</span><span style="color:var(--text-main)">Brushed Aluminum</span>
                 </div>
             </div>
 
-            <button class="btn-add mono uppercase tracking-wide">Add to Cart</button>
+            <button class="btn-fill" onclick="openModal('modal-product')">View Full Specs</button>
         </div>
     </section>
 
     <section id="manifesto">
-        <div class="manifesto-lines">
-            <span class="manifesto-text uppercase tracking-wider">No Flowers.</span>
-            <span class="manifesto-text uppercase tracking-wider">No Drama.</span>
+        <div class="manifesto-text uppercase tracking-wider">
+            No Flowers.<br>No Drama.<br>JUST ATMOSPHERE.
         </div>
     </section>
 
     <footer>
-        <div class="footer-brand">
-            <h4 class="uppercase tracking-wide mono">Grayscale Projects</h4>
-            <p class="text-muted" style="max-width: 300px;">
-                An exploration of industrial aesthetics through scent.
-            </p>
-        </div>
-        <div class="footer-links mono uppercase">
-            <ul>
-                <li><a href="#">Shop</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Stockists</a></li>
-            </ul>
-        </div>
-        <div class="footer-links mono uppercase">
-            <ul>
-                <li><a href="#">Instagram</a></li>
-                <li><a href="#">WeChat</a></li>
-                <li><a href="#">Legal</a></li>
-            </ul>
+        <div>
+            <h4 class="uppercase tracking-wide mono" style="margin-bottom:20px;">Grayscale Projects</h4>
+            <p class="text-muted">Shanghai based industrial design studio.</p>
         </div>
         <div class="copyright mono uppercase">
             <span>© 2026 Grayscale.</span>
-            <span>Design by Gemini.</span>
+            <span>Est. Shanghai</span>
         </div>
     </footer>
+
+
+    <div id="modal-philosophy" class="modal-overlay" onclick="closeModal(event, 'modal-philosophy')">
+        <div class="modal-container">
+            <button class="close-btn" onclick="closeModal(event, 'modal-philosophy')">×</button>
+            
+            <h2 class="modal-title uppercase">The Grayscale Ideology</h2>
+            
+            <div class="modal-grid">
+                <div>
+                    <span class="modal-subtitle uppercase">01. Origin</span>
+                    <p class="mono text-muted" style="font-size: 0.9rem; margin-bottom: 40px;">
+                        Born in the rain-soaked streets of Shanghai. Grayscale is a reaction against the overly sweet, overly floral commercial perfume market. We find beauty in the industrial, the unfinished, and the grey areas of life.
+                    </p>
+                    
+                    <span class="modal-subtitle uppercase">02. Brutalism</span>
+                    <p class="mono text-muted" style="font-size: 0.9rem;">
+                        Our aesthetics are inspired by Brutalist architecture. Raw concrete, exposed metal, and functional forms. We do not hide the structure; we celebrate it.
+                    </p>
+                </div>
+                <div>
+                    <span class="modal-subtitle uppercase">03. The Scent</span>
+                    <p class="mono text-muted" style="font-size: 0.9rem; margin-bottom: 40px;">
+                        Our scents are "anti-perfume". They smell like places, memories, and textures. Wet pavement, cold steel, old libraries, dry moss.
+                    </p>
+                    <div style="margin-top: 40px;">
+                        <span class="mono uppercase" style="font-size: 0.8rem; color: var(--accent);">Core Value:</span>
+                        <h3 class="uppercase" style="margin-top: 15px; font-size: 1.5rem;">Silence is<br>Luxury.</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-product" class="modal-overlay" onclick="closeModal(event, 'modal-product')">
+        <div class="modal-container">
+            <button class="close-btn" onclick="closeModal(event, 'modal-product')">×</button>
+            
+            <span class="mono" style="color:var(--accent);">GS-01 TECHNICAL DATA</span>
+            <h2 class="modal-title uppercase">Silent Moss / Analysis</h2>
+            
+            <div class="modal-grid">
+                <div>
+                    <div class="note-block">
+                        <span class="modal-subtitle">TOP NOTES (0-30 MINS)</span>
+                        <p class="text-main">Rain Water, Metallic Aldehydes, White Pepper</p>
+                        <p class="mono text-muted" style="font-size: 0.8rem; margin-top: 5px;">*Simulates the smell of cold rain on steel.</p>
+                    </div>
+                    
+                    <div class="note-block">
+                        <span class="modal-subtitle">HEART NOTES (1-4 HRS)</span>
+                        <p class="text-main">Concrete Accord, Damp Moss, Juniper</p>
+                        <p class="mono text-muted" style="font-size: 0.8rem; margin-top: 5px;">*The core structure. Green but grey.</p>
+                    </div>
+
+                    <div class="note-block">
+                        <span class="modal-subtitle">BASE NOTES (4-8 HRS)</span>
+                        <p class="text-main">Cedarwood, Vetiver, White Musk</p>
+                        <p class="mono text-muted" style="font-size: 0.8rem; margin-top: 5px;">*A lingering skin scent.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="modal-subtitle">VESSEL CONSTRUCTION</span>
+                    <ul class="mono text-muted" style="font-size: 0.9rem; margin-bottom: 40px;">
+                        <li style="margin-bottom: 10px;">+ Material: 6061 Aerospace Aluminum</li>
+                        <li style="margin-bottom: 10px;">+ Finish: Hand-brushed Anodized</li>
+                        <li style="margin-bottom: 10px;">+ Weight: 320g (Heavyweight)</li>
+                        <li style="margin-bottom: 10px;">+ Engraving: Laser Etched ID</li>
+                    </ul>
+
+                    <span class="modal-subtitle">USAGE</span>
+                    <p class="mono text-muted" style="font-size: 0.9rem;">
+                        Apply to pulse points. Do not rub. Allow the alcohol to evaporate naturally to preserve the metallic top notes.
+                    </p>
+
+                    <button class="btn-fill" style="width:100%; margin-top: 50px; text-align: center;">Add to Cart - ¥1,450</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
                 });
             }, { threshold: 0.1 });
-
             document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
         });
+
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeModal(event, modalId) {
+            if (event.target.classList.contains('modal-overlay') || event.target.classList.contains('close-btn')) {
+                const modal = document.getElementById(modalId);
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto'; 
+            }
+        }
     </script>
 </body>
 </html>
